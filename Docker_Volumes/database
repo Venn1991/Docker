@@ -1,0 +1,20 @@
+Persisting Data With Volumes
+
+While the container created above is a fully functioning MySQL server, 
+you need to set up volumes so your data isn’t lost when the container stops. 
+The MySQL Docker image is configured to store all its data in the /var/lib/mysql directory. 
+Mounting a volume to this directory will 
+enable persistent data storage that outlives any single container instance.
+Stop and remove your earlier container to avoid naming conflicts:
+
+docker run --name mysql -d \
+    -p 3306:3306 \
+    -e MYSQL_ROOT_PASSWORD=change-me \
+    --restart unless-stopped \
+    -v mysql:/var/lib/mysql \
+    mysql:8
+
+docker exec -it mysql mysql -p
+This command runs mysql -p inside the mysql container. 
+The -it flags mean your terminal’s input stream will be 
+forwarded to the container as an interactive TTY.
